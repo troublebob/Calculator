@@ -10,4 +10,7 @@ public class ConstantElement extends FormulaElement{
 	public double getValue() {
 		return constantElement;
 	}
+	public String toString(){
+		return String.valueOf(constantElement);
+	}
 }

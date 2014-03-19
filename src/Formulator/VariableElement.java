@@ -18,4 +18,7 @@ public class VariableElement extends FormulaElement {
 	public void setValue(double value) {
 		this.value = value;
 	}
+	public String toString(){
+		return variableElement;
+	}
 }
