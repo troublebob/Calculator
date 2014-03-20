@@ -1,4 +1,3 @@
-Week 3
+Week 4
 ======
-Need to fix addArgs for Sine and Cosine
-Had to reorder Power and Trig functions to allow for single arg to be passed to trig functions
+Code to be used for shared project
