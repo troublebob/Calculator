@@ -5,12 +5,11 @@ import java.util.regex.Pattern;
 
 public class FormulaElement {
 
-	private Vector<Object> ob = new Vector<Object>();
-
 	public double getValue() {
 		return 0;
 	}
-	public void parseFormula(String s){
+	public static FormulaElement parseFormula(String s){
+		Vector<Object> ob = new Vector<Object>();
 		Pattern p= Pattern.compile("[A-Za-z]+|[0-9]+|[+]|-|/|\\^|\\(|\\)| |\t|(Cos)|(Sin)");
 		Matcher m= p.matcher(s);
 
@@ -20,12 +19,75 @@ public class FormulaElement {
 		}
 		//recursive part
 		for (int i = 0; i < ob.size(); i++) {
-			if(Pattern.matches("\\(", ob.elementAt(i).toString()) && (i<1||(ob.elementAt(i-1).toString().equals("Cos"))==false)||(ob.elementAt(i-1).toString().equals("Sin"))==false){
-				System.out.println("Blah");
-			}
+			if(i==0 && Pattern.matches("\\(", ob.elementAt(i).toString())){
+				//Recurse
+				for (int j = i; j< ob.size();j++){
+					int intNumBrackets = 0;
+					if(Pattern.matches("\\(", ob.elementAt(i).toString())){
+						intNumBrackets++;
+					}else if(Pattern.matches("\\)", ob.elementAt(i).toString())){
+						intNumBrackets--;
+					}
+					if(intNumBrackets==0){
+						String subf = "";
+						for(int k = i+1; k < j; k++){
+							subf += ob.remove(i+1);
+						}
+						FormulaElement temp = parseFormula(subf);
+						ob.set(i, temp);
+						ob.remove(i+1);
+					}
+				}
+			}else if(i>0 && Pattern.matches("\\(", ob.elementAt(i).toString()) && (ob.elementAt(i-1).toString().equals("Cos")==true||ob.elementAt(i-1).toString().equals("Sin")==true)){
+				// Cosine and Sine
+				//System.out.println("Triggered!!1st Case");
+				int intNumBrackets = 0;
+				for (int j = i; j < ob.size(); j++){
+					if(Pattern.matches("\\(", ob.elementAt(j).toString())){
+						intNumBrackets++;
+					}else if(Pattern.matches("\\)", ob.elementAt(j).toString())){
+						intNumBrackets--;
+					}
+					if(intNumBrackets==0){
+						String subf = "";
+						for(int k = i+1; k < j; k++){
+							subf += ob.remove(i+1);
+						}
+						FormulaElement temp = parseFormula(subf);
+						ob.insertElementAt(temp, i+1);
+						i++;
+						break;
+					}
+				}
 			
-		}
-		
+			}else if(i>0 && Pattern.matches("\\(", ob.elementAt(i).toString())){
+				//Recurse
+				//System.out.println("Triggered!!2nd Case");
+				int intNumBrackets = 0;
+				for (int j = i; j < ob.size(); j++){
+					if(Pattern.matches("\\(", ob.elementAt(j).toString())){
+						intNumBrackets++;
+					}else if(Pattern.matches("\\)", ob.elementAt(j).toString())){
+						intNumBrackets--;
+					}
+					if(intNumBrackets==0){
+						String subf = "";
+						for(int k = i+1; k < j; k++){
+							subf += ob.remove(i+1);
+						}
+						FormulaElement temp = parseFormula(subf);
+						//ob.insertElementAt(temp, i+1);
+						ob.set(i, temp);
+						ob.remove(i+1);
+						i++;
+						break;
+					}
+				}
+			}else{
+
+			}
+		}//Do the rest
+
 		for (int i = 0; i < ob.size(); i++) {
 			if(Pattern.matches("\\d+", ob.elementAt(i).toString())){			
 				//If numbers change to Constants
@@ -80,6 +142,11 @@ public class FormulaElement {
 			}
 		}
 		testString(ob,"Pow");
+
+		//for (int i = 0; i < ob.size(); i++) {
+		//	System.out.println(">>>" + ob.get(i) + " - " + ob.get(i).getClass().getSimpleName());
+		//}
+
 		for (int i = 0; i < ob.size(); i++) {
 			if(ob.elementAt(i).toString().equals("Cos")){
 				//Add item between brackets to Element
@@ -90,14 +157,14 @@ public class FormulaElement {
 				ob.remove(i+1);
 				//Remove ')'
 				ob.remove(i+1);
-				i--;
+				//i--;
 			}
 			if(ob.elementAt(i).toString().equals("Sin")){
 				ob.set(i, new SineFunctionElement((FormulaElement)ob.elementAt(i+2)));
 				ob.remove(i+1);
 				ob.remove(i+1);
 				ob.remove(i+1);
-				i--;
+				//i--;
 			}
 		}
 
@@ -143,11 +210,11 @@ public class FormulaElement {
 			}
 		}
 		testString(ob,"+Or-");
+		return ((FormulaElement) ob.elementAt(0));
 	}
-	public void testString(Vector<Object> ob,String run){
-		for(int i=0;i<ob.size();i++){
-			System.out.println(run+"<"+i+"> Current Class:"+ob.elementAt(i).getClass()+" Current to_String:"+ob.elementAt(i).toString());
-		}
+	static void testString(Vector<Object> ob,String run){
+		//for(int i=0;i<ob.size();i++){
+		//	System.out.println(run+"<"+i+"> Current Class:"+ob.elementAt(i).getClass().getSimpleName()+" Current to_String:"+ob.elementAt(i).toString());
+		//}
 	}
-
 }

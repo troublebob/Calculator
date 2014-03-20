@@ -12,17 +12,16 @@ public class CosineFunctionElement extends FunctionElement{
 	public CosineFunctionElement(){
 		super();
 	}
-//	public void addArguments(FormulaElement e){
-//		if(argumentsFlag==false){
-//			this.addArguments(e);
-//		} else {
-//		}
-//	}
+	public void addArguments(FormulaElement e){
+		if(argumentsFlag==false){
+			getArguments().add(e);
+		}
+	}
 
 	public String toString() {
 		String s = "Cos";
 		if(argumentsFlag){
-			s+=getArguments().elementAt(0);
+			s+="("+getArguments().elementAt(0)+")";
 		}
 		return s;
 	}

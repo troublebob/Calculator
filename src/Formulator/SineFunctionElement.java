@@ -12,17 +12,15 @@ public class SineFunctionElement extends FunctionElement{
 	public SineFunctionElement(){
 		super();
 	}
-//	public void addArguments(FormulaElement e){
-//		if(argumentsFlag==false){
-//			addArguments(e);
-//		} else {
-//			
-//		}
-//	}
+	public void addArguments(FormulaElement e){
+		if(argumentsFlag==false){
+			getArguments().add(e);
+		}
+	}
 	public String toString() {
 		String s = "Sin";
 		if(argumentsFlag){
-			s+=getArguments().elementAt(0);
+			s+="("+getArguments().elementAt(0)+")";
 		}
 		return s;
 	}

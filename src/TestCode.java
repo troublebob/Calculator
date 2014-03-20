@@ -8,9 +8,10 @@ import java.util.Vector;
 public class TestCode {
 
 	public static void main(String[] args) {
-		String input="22X+7^6+7Cos(yX20)";
-		FormulaElement f = new FormulaElement();
-		f.parseFormula(input);
+		String input="X+7Y+(Cos(7Y)/2)";
+		
+		FormulaElement result = FormulaElement.parseFormula(input);
+		System.out.println(result);
 		
 	}
 
