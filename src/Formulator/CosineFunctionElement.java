@@ -9,9 +9,9 @@ public class CosineFunctionElement extends FunctionElement{
 		addArguments(f1);
 		argumentsFlag=true;
 	}
-//	public CosineFunctionElement(){
-//		super();
-//	}
+	public CosineFunctionElement(){
+		super();
+	}
 //	public void addArguments(FormulaElement e){
 //		if(argumentsFlag==false){
 //			this.addArguments(e);
@@ -20,8 +20,10 @@ public class CosineFunctionElement extends FunctionElement{
 //	}
 
 	public String toString() {
-		String s = "";
-		s+="Cos "+getArguments().elementAt(0);
+		String s = "Cos";
+		if(argumentsFlag){
+			s+=getArguments().elementAt(0);
+		}
 		return s;
 	}
 }

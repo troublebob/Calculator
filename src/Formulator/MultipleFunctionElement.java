@@ -8,7 +8,6 @@ public class MultipleFunctionElement extends FunctionElement {
 		super();
 	}
 
-
 	public String toString() {
 		
 		StringBuffer st = new StringBuffer();

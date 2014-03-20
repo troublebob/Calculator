@@ -9,9 +9,9 @@ public class SineFunctionElement extends FunctionElement{
 		addArguments(e);
 		argumentsFlag=true;
 	}
-//	public SineFunctionElement(){
-//		super();
-//	}
+	public SineFunctionElement(){
+		super();
+	}
 //	public void addArguments(FormulaElement e){
 //		if(argumentsFlag==false){
 //			addArguments(e);
@@ -20,8 +20,10 @@ public class SineFunctionElement extends FunctionElement{
 //		}
 //	}
 	public String toString() {
-		String s = "";
-		s+="Sin "+getArguments().elementAt(0);
+		String s = "Sin";
+		if(argumentsFlag){
+			s+=getArguments().elementAt(0);
+		}
 		return s;
 	}
 }
