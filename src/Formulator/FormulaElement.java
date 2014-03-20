@@ -18,7 +18,14 @@ public class FormulaElement {
 			ob.add(m.group());
 			//System.out.println(m.group());
 		}
-
+		//recursive part
+		for (int i = 0; i < ob.size(); i++) {
+			if(Pattern.matches("\\(", ob.elementAt(i).toString()) && (i<1||(ob.elementAt(i-1).toString().equals("Cos"))==false)||(ob.elementAt(i-1).toString().equals("Sin"))==false){
+				System.out.println("Blah");
+			}
+			
+		}
+		
 		for (int i = 0; i < ob.size(); i++) {
 			if(Pattern.matches("\\d+", ob.elementAt(i).toString())){			
 				//If numbers change to Constants
