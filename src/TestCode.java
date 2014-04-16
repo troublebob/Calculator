@@ -8,11 +8,18 @@ import java.util.Vector;
 public class TestCode {
 
 	public static void main(String[] args) {
-		String input="X+7Y+(Cos(7Y)/2)";
-		
+		String input="3(4-y(xCos(7x+2)))";
+		//String input ="x";
 		FormulaElement result = FormulaElement.parseFormula(input);
 		System.out.println(result);
-		
+		System.out.println(result.isFullyGrounded());
+		result.setVariableValue("x", 5);
+		System.out.println(result);
+		result.setVariableValue("y", 8);
+		System.out.println(result);
+		System.out.println(result.isFullyGrounded());
+		System.out.println(((FormulaElement)result).getValue());
+		//System.out.println(result.getArguments());
 	}
 
 }

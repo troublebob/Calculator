@@ -5,18 +5,48 @@ import java.util.regex.Pattern;
 
 public class FormulaElement {
 
-	public double getValue() {
+	public void setVariableValue(String varName, double value){
+		if(this instanceof VariableElement){
+			((VariableElement)this).setVariableValue(varName, value);
+		}else if (this instanceof ConstantElement){
+		}else if (this instanceof FunctionElement){
+			FunctionElement f = (FunctionElement)this;
+			for(FormulaElement subf :f.getArguments()){
+				subf.setVariableValue(varName,value);
+			}
+		}
+	}
+	public double getValue(){
 		return 0;
 	}
-	public static FormulaElement parseFormula(String s){
-		Vector<Object> ob = new Vector<Object>();
-		Pattern p= Pattern.compile("[A-Za-z]+|[0-9]+|[+]|-|/|\\^|\\(|\\)| |\t|(Cos)|(Sin)");
-		Matcher m= p.matcher(s);
 
+	public boolean isFullyGrounded(){
+		if(this instanceof VariableElement){
+			return ((VariableElement)this).isFullyGrounded();
+		}else if (this instanceof ConstantElement){
+			return ((ConstantElement)this).isFullyGrounded();
+		}else if (this instanceof FunctionElement){
+			FunctionElement f = (FunctionElement)this;
+			for(FormulaElement subf :f.getArguments()){
+				if(!subf.isFullyGrounded()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public static FormulaElement parseFormula(String s){
+
+		Vector <Object> ob = new Vector<Object>();
+		Pattern p= Pattern.compile("(Cos)|(Sin)|((?!Cos|sin)[A-Za-z])+|[0-9]+|[+]|-|/|\\^|\\(|\\)| |\t");
+		//"[A-Za-z]+|[0-9]+|[+]|-|/|\\^|\\(|\\)| |\t|(Cos)|(Sin)"); //(Cos)|(Sin)|([A-Za-z](?!Cos|Sin))+|[0-9]|[+]|-|/|\\^|\\(|\\)| |\t|| 
+		Matcher m= p.matcher(s);
+		//System.out.println("Run/Recurse");
 		while(m.find()){
 			ob.add(m.group());
 			//System.out.println(m.group());
 		}
+
 		//recursive part
 		for (int i = 0; i < ob.size(); i++) {
 			if(i==0 && Pattern.matches("\\(", ob.elementAt(i).toString())){
@@ -59,7 +89,7 @@ public class FormulaElement {
 						break;
 					}
 				}
-			
+
 			}else if(i>0 && Pattern.matches("\\(", ob.elementAt(i).toString())){
 				//Recurse
 				//System.out.println("Triggered!!2nd Case");
@@ -89,7 +119,10 @@ public class FormulaElement {
 		}//Do the rest
 
 		for (int i = 0; i < ob.size(); i++) {
-			if(Pattern.matches("\\d+", ob.elementAt(i).toString())){			
+			if(ob.elementAt(i) instanceof FormulaElement){
+
+			}
+			else if(Pattern.matches("\\d+", ob.elementAt(i).toString())){			
 				//If numbers change to Constants
 				ConstantElement ce = new ConstantElement(Double.parseDouble((String) ob.elementAt(i)));
 				ob.set(i, ce);
@@ -113,7 +146,7 @@ public class FormulaElement {
 				if(ob.elementAt(i-1) instanceof VariableElement){
 					MultipleFunctionElement mu = new MultipleFunctionElement();
 					mu.addArguments((ConstantElement) ob.elementAt(i));
-					mu.addArguments((VariableElement)ob.elementAt(i-1));
+					mu.addArguments((VariableElement) ob.elementAt(i-1));
 					ob.set(i-1, mu);
 					ob.remove(i);
 					i--;
@@ -170,14 +203,18 @@ public class FormulaElement {
 
 		testString(ob,"Trig");
 		for (int i = 0; i < ob.size() - 1; i++){
+			//System.out.println(i);
+			testString(ob,"Inloop");
 			if((ob.elementAt(i) instanceof FormulaElement) && (ob.elementAt(i+1) instanceof FormulaElement)){
 				MultipleFunctionElement mu = new MultipleFunctionElement();
 				mu.addArguments((FormulaElement) ob.elementAt(i));
 				mu.addArguments((FormulaElement) ob.elementAt(i+1));
 				ob.set(i, mu);
 				ob.remove(i+1);
-				i--;
+				//i--;
+				//System.out.println(i);
 			}
+			//System.out.println(i);
 			if(ob.elementAt(i).toString().equals("/")){
 				DivideFunctionElement div = new DivideFunctionElement();
 				div.addArguments((FormulaElement) ob.elementAt(i-1));
@@ -185,7 +222,7 @@ public class FormulaElement {
 				ob.set(i-1,(FormulaElement)div);
 				ob.remove(i);
 				ob.remove(i);
-				i--;
+				//i--;
 			}
 		}
 		testString(ob,"Mult+/");
@@ -210,11 +247,15 @@ public class FormulaElement {
 			}
 		}
 		testString(ob,"+Or-");
+		//System.out.println(ob.elementAt(0).getClass() + "Returns to recurse: "+ob.elementAt(0).toString());
+		//validForm.add((FormulaElement) ob.elementAt(0));
+		//args.add((FormulaElement) ob.elementAt(0));
 		return ((FormulaElement) ob.elementAt(0));
 	}
+
 	static void testString(Vector<Object> ob,String run){
-		//for(int i=0;i<ob.size();i++){
-		//	System.out.println(run+"<"+i+"> Current Class:"+ob.elementAt(i).getClass().getSimpleName()+" Current to_String:"+ob.elementAt(i).toString());
-		//}
+		for(int i=0;i<ob.size();i++){
+			//	System.out.println(run+"<"+i+"> Current Class:"+ob.elementAt(i).getClass().getSimpleName()+" Current to_String:"+ob.elementAt(i).toString());
+		}
 	}
 }

@@ -32,4 +32,12 @@ public class MultipleFunctionElement extends FunctionElement {
 		}
 		return (st1.append(st.toString()).toString());
 	}
+	public double getValue(){
+		double temp = 1;
+		FunctionElement f = (FunctionElement)this;
+		for(FormulaElement subf :f.getArguments()){
+			temp *= subf.getValue();
+		}
+		return temp;
+	}
 }

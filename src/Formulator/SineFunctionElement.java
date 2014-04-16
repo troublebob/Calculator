@@ -1,4 +1,5 @@
 package Formulator;
+import java.math.*;
 
 public class SineFunctionElement extends FunctionElement{
 
@@ -11,6 +12,9 @@ public class SineFunctionElement extends FunctionElement{
 	}
 	public SineFunctionElement(){
 		super();
+	}
+	public double getValue(){
+		return (Math.sin(Math.toRadians(this.getArguments().elementAt(0).getValue())));
 	}
 	public void addArguments(FormulaElement e){
 		if(argumentsFlag==false){

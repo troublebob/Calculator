@@ -1,5 +1,5 @@
 package Formulator;
-
+import java.math.*;
 public class CosineFunctionElement extends FunctionElement{
 
 	boolean argumentsFlag=false;
@@ -16,6 +16,9 @@ public class CosineFunctionElement extends FunctionElement{
 		if(argumentsFlag==false){
 			getArguments().add(e);
 		}
+	}
+	public double getValue(){
+		return (Math.cos(Math.toRadians(this.getArguments().elementAt(0).getValue())));
 	}
 
 	public String toString() {

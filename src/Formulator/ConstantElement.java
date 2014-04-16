@@ -13,4 +13,7 @@ public class ConstantElement extends FormulaElement{
 	public String toString(){
 		return String.valueOf(constantElement);
 	}
+	public boolean isFullyGrounded(){
+		return true;
+	}
 }
