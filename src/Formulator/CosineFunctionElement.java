@@ -18,7 +18,9 @@ public class CosineFunctionElement extends FunctionElement{
 		}
 	}
 	public double getValue(){
-		return (Math.cos(Math.toRadians(this.getArguments().elementAt(0).getValue())));
+		double temp=(this.getArguments().elementAt(0).getValue());
+		//System.out.println(Math.toRadians(this.getArguments().elementAt(0).getValue()));
+		return Math.round(Math.cos(Math.toRadians(temp)));
 	}
 
 	public String toString() {

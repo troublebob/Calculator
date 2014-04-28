@@ -14,7 +14,7 @@ public class SineFunctionElement extends FunctionElement{
 		super();
 	}
 	public double getValue(){
-		return (Math.sin(Math.toRadians(this.getArguments().elementAt(0).getValue())));
+		return Math.round(Math.sin(Math.toRadians(this.getArguments().elementAt(0).getValue())));
 	}
 	public void addArguments(FormulaElement e){
 		if(argumentsFlag==false){

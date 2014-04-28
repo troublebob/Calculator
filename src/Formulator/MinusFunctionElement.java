@@ -17,10 +17,10 @@ public class MinusFunctionElement extends FunctionElement{
 		return st.toString();
 	}
 	public double getValue(){
-		double temp = 0;
 		FunctionElement f = (FunctionElement)this;
-		for(FormulaElement subf :f.getArguments()){
-			temp -= subf.getValue();
+		double temp = f.getArguments().elementAt(0).getValue();
+		for (int i = 1; i < f.getArguments().size(); i++) {
+			temp -= f.getArguments().elementAt(i).getValue();
 		}
 		return temp;
 	}

@@ -37,7 +37,9 @@ public class MultipleFunctionElement extends FunctionElement {
 		FunctionElement f = (FunctionElement)this;
 		for(FormulaElement subf :f.getArguments()){
 			temp *= subf.getValue();
+			subf.checkingValue(subf, temp);	
 		}
 		return temp;
 	}
+	
 }

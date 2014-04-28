@@ -167,8 +167,15 @@ public class FormulaElement {
 		//Have done the power function pre Cos and Sin as example in assignment doc has powerfunctionelement as argument for Cos
 		for (int i = 1; i < ob.size(); i++) {
 			if(ob.elementAt(i).toString().equals("^")){
-				PowerFunctionElement pw = new PowerFunctionElement((FormulaElement)ob.elementAt(i-1), (FormulaElement)ob.elementAt(i+1));
-				ob.set(i-1, pw);
+				PowerFunctionElement pw = new PowerFunctionElement();
+				//(FormulaElement)ob.elementAt(i-1), (FormulaElement)ob.elementAt(i+1)
+				if(ob.elementAt(i-1)instanceof PowerFunctionElement){
+					((PowerFunctionElement) ob.elementAt(i-1)).addArguments((FormulaElement) ob.elementAt(i+1));
+				}else{
+					pw.addArguments((FormulaElement)ob.elementAt(i-1));
+					pw.addArguments((FormulaElement)ob.elementAt(i+1));
+					ob.set(i-1, pw);
+				}				
 				ob.remove(i);
 				ob.remove(i);
 				i--;
@@ -257,5 +264,10 @@ public class FormulaElement {
 		for(int i=0;i<ob.size();i++){
 			//	System.out.println(run+"<"+i+"> Current Class:"+ob.elementAt(i).getClass().getSimpleName()+" Current to_String:"+ob.elementAt(i).toString());
 		}
+	}
+	public void checkingValue(FormulaElement subf, double temp){
+		System.out.println(temp);
+		System.out.println(subf.getClass());
+		System.out.println(subf.toString());
 	}
 }
