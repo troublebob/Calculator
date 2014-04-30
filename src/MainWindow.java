@@ -361,7 +361,7 @@ public class MainWindow {
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
 				 // TODO Auto-generated method stub
-				 inputString.setText(decider.answer(GRAPH, inputString.getText()));
+				 decider.answer(GRAPH, inputString.getText());
 			 }
 		 } );
 
