@@ -1,9 +1,6 @@
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-
-
-
 import java.awt.TextField;
 
 import javax.swing.ImageIcon;
@@ -15,8 +12,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Document;
 import javax.swing.text.TextAction;
 
-
-
+import Formulator.FormulaElement;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -54,10 +50,10 @@ public class MainWindow {
 	private JButton button_sin;
 	private JButton button_cos;
 	private JButton button_graph;
-	private JButton button_diff;
+	private JButton button_savf;
 	private JButton button_save;
 	private JButton button_load;
-
+	public FormulaElement savedFormula;
 	ImageIcon saveIcon = new ImageIcon("filesave.png");
 
 	/**
@@ -215,7 +211,7 @@ public class MainWindow {
 		 button_zero = new JButton("0");
 		 button_zero.setBounds(70,160, 60, 33);
 		 frame.getContentPane().add(button_zero);
-		 button_zero.addActionListener(new ActionListener() {           
+		 button_zero.addActionListener(new ActionListener() {          
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
 				 // TODO Auto-generated method stub
@@ -226,7 +222,7 @@ public class MainWindow {
 		 button_delete = new JButton("Del");
 		 button_delete.setBounds(130,160, 60, 33);
 		 frame.getContentPane().add(button_delete);
-		 button_delete.addActionListener(new ActionListener() {         
+		 button_delete.addActionListener(new ActionListener() {        
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
 				 // TODO Auto-generated method stub
@@ -365,19 +361,20 @@ public class MainWindow {
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
 				 // TODO Auto-generated method stub
-				 inputString.setText("graph " + inputString.getText());
+				 inputString.setText(decider.answer(GRAPH, inputString.getText()));
 			 }
 		 } );
 
-		 button_diff = new JButton("diff");
-		 button_diff.setBounds(364, 160, 60, 33);
-		 frame.getContentPane().add(button_diff);
-		 button_diff.addActionListener(new ActionListener() {
+		 button_savf = new JButton("save f(x)");
+		 button_savf.setBounds(364, 160, 60, 33);
+		 frame.getContentPane().add(button_savf);
+		 button_savf.addActionListener(new ActionListener() {
 
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
 				 // TODO Auto-generated method stub
-				 inputString.setText("diffrenciate " + inputString.getText());
+				 savedFormula=FormulaElement.parseFormula(inputString.getText());
+				 inputString.setText("Formula Saved");
 			 }
 		 } );
 
@@ -386,28 +383,22 @@ public class MainWindow {
 		 frame.getContentPane().add(button_save);
 		 button_save.addActionListener(new ActionListener() {
 
+
+
 			 @Override
 			 public void actionPerformed(ActionEvent e) {
-				 // TODO Auto-generated method stub
 
-				 //                         	 JFileChooser chooser = new JFileChooser();
-				 //                        	 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "Text Files");
-				 //                        	    chooser.setFileFilter(filter);
-				 //                        	    int returnVal = chooser.showOpenDialog(chooser);
-				 //                        	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-				 //                        	       System.out.println("You chose to save this file: " +
-				 //                        	            chooser.getSelectedFile().getName());
-				 //                        	       
-				// saveFile saving = null;
+				 //                            
+				 saveFile saving = null;
 				 String formula = inputString.getText();
 				 System.out.println(formula);
-			//	 saving.save(formula);
+				 saving.save(formula);
 
-			 }               
+			 }              
+		 });
 
-		 }
 		 //           }
-				 );
+
 
 
 
@@ -423,17 +414,26 @@ public class MainWindow {
 				 // TODO Auto-generated method stub
 
 				 JFileChooser chooser = new JFileChooser();
-				 FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "Text Files");
-				 chooser.setFileFilter(filter);
+				 //                       FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+				 //                       jf.setFileFilter(filter);
+
 				 int returnVal = chooser.showOpenDialog(chooser);
 				 if(returnVal == JFileChooser.APPROVE_OPTION) {
-					 System.out.println("You chose to load this file: " +
-							 chooser.getSelectedFile().getName());
+					 System.out.println("You chose to load this file: " + chooser.getSelectedFile().getName());
+					 String filename=chooser.getSelectedFile().getName();
 
 
-				 } 
+					 //      JOptionPane.showMessageDialog( "Loading from file: " + loadFile.ReturnIt());
+					 String input = loadFile.ReturnString(filename); //Get the current text
+					 //                                      System.out.println(input);      //Loads from  C:\SWEET\Practical_1\out.txt
+
+					 inputString.setText("" + input);
+
+				 }
 			 }
+
 		 } );
+
 
 
 

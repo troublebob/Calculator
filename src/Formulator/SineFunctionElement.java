@@ -14,7 +14,13 @@ public class SineFunctionElement extends FunctionElement{
 		super();
 	}
 	public double getValue(){
-		return Math.round(Math.sin(Math.toRadians(this.getArguments().elementAt(0).getValue())));
+		//System.out.println("Here");
+		//System.out.println("args"+this.getArguments().elementAt(0).getValue());
+		//System.out.println("toRads"+Math.toRadians(this.getArguments().elementAt(0).getValue()));
+		//System.out.println("Sin"+Math.sin(Math.toRadians(this.getArguments().elementAt(0).getValue())));
+		double value = Math.sin(Math.toRadians(this.getArguments().elementAt(0).getValue()));
+		//System.out.println(value);
+		return value;
 	}
 	public void addArguments(FormulaElement e){
 		if(argumentsFlag==false){
